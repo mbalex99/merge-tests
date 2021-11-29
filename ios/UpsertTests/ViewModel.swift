@@ -42,6 +42,7 @@ class ViewModel: ObservableObject {
     }
 
     func insert() {
+        print("insert called")
         let payload: [String: Any?] = [
             "_id": docID,
             "name": "Honda-overwritten-\(Int.random(in: 0..<999))",
@@ -56,6 +57,7 @@ class ViewModel: ObservableObject {
     }
 
     func insertOverwrite() {
+        print("insertOverwrite called")
         let payload: [String: Any?] = [
             "_id": docID,
             "name": "Honda-overwritten-\(Int.random(in: 0..<999))",
@@ -70,6 +72,7 @@ class ViewModel: ObservableObject {
     }
 
     func insertMerge() {
+        print("insertMerge called")
         let payload: [String: Any?] = [
             "_id": docID,
             "name": "Honda",
@@ -83,6 +86,7 @@ class ViewModel: ObservableObject {
     }
 
     func remove() {
+        print("remove called")
         ditto.store.collection(collectionName).findByID(docID).remove()
         lastActionId = lastActionId + 1
         actions.insert(Action(id: lastActionId, text: ".remove()"), at: 0)

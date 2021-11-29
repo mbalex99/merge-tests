@@ -22,7 +22,7 @@
   let liveQuery: LiveQuery;
 
   interface Action {
-    id: number;
+    id: string;
     text: string;
   }
 
@@ -108,7 +108,7 @@
 
     actions = _.concat(
       {
-        id: _.random(0, 999),
+        id: _.uniqueId(),
         text: `ditto.store.collection("${collectionName}").insert(${JSON.stringify(
           payload,
           null,
@@ -137,7 +137,7 @@
 
     actions = _.concat(
       {
-        id: _.random(0, 999),
+        id: _.uniqueId(),
         text: `ditto.store.collection("${collectionName}").insert(${JSON.stringify(
           payload,
           null,
@@ -152,7 +152,7 @@
     await ditto!.store.collection(collectionName).findByID(docID).remove();
     actions = _.concat(
       {
-        id: _.random(0, 999),
+        id: _.uniqueId(),
         text: `ditto.store.collection("${collectionName}").findByID("${docID}").remove()`,
       },
       actions

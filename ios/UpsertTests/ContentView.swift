@@ -21,53 +21,48 @@ struct ContentView: View {
                         Text("Collection Name")
                             .font(.caption2)
                         TextField("collectionName", text: $viewModel.collectionName, prompt: Text("Collection Name"))
-                            
+
                     }
                     VStack(alignment: .leading) {
                         Text("DocID")
                             .font(.caption2)
                         TextField("docID", text: $viewModel.docID, prompt: Text("Collection Name"))
                     }
-                    HStack {
-                        Button("insert", action: { viewModel.insert() })
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                        Spacer()
-                        Button("remove", action: { viewModel.remove() })
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                            .foregroundColor(.white)
-                            .background(Color.red)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
-                    HStack {
-                        Button("insert(.overwrite)", action: { viewModel.insertOverwrite() })
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                            .foregroundColor(.black)
-                            .background(Color.teal)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                        Spacer()
-                        Button("insert(.merge)", action: { viewModel.insertMerge() })
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                            .foregroundColor(.black)
-                            .background(Color.teal)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                    Button("insert", action: { viewModel.insert() })
+                        .frame(maxWidth: .infinity, minHeight: 34)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Button("remove", action: { viewModel.remove() })
+                        .frame(maxWidth: .infinity, minHeight: 34)
+                        .foregroundColor(.white)
+                        .background(Color.red)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Button("insert(.overwrite)", action: { viewModel.insertOverwrite() })
+                        .frame(maxWidth: .infinity, minHeight: 34)
+                        .foregroundColor(.black)
+                        .background(Color.teal)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Button("insert(.merge)", action: { viewModel.insertMerge() })
+                        .frame(maxWidth: .infinity, minHeight: 34)
+                        .foregroundColor(.black)
+                        .background(Color.teal)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
-                .frame(maxHeight: 300)
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Current Document \(viewModel.docID)")
                         Text(viewModel.currentDocJSONString)
+                            .font(.system(size: 500))
+                            .minimumScaleFactor(0.01)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                 }
             }
             .frame(width: geometry.size.width,
-                                   height: nil,
-                                   alignment: .topLeading)
+                   height: nil,
+                   alignment: .topLeading)
         }
     }
 }
