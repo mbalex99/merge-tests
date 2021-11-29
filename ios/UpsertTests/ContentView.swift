@@ -59,9 +59,7 @@ struct ContentView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Current Document \(viewModel.docID)")
-                            .font(Font.system(size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14).monospaced())
                         Text(viewModel.currentDocJSONString)
-                            .font(Font.system(size: UIDevice.current.userInterfaceIdiom == .phone ? 10 : 14).monospaced())
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
