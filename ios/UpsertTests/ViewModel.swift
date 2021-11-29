@@ -22,6 +22,9 @@ class ViewModel: ObservableObject {
     @Published var currentDocJSONString = "null"
     @Published var actions = [Action]()
 
+    @Published var isCollectionNameTextFieldFocused = false
+    @Published var isDocIDTextFieldFocused = false
+
     var cancellables = Set<AnyCancellable>()
 
     let ditto: Ditto = DittoManager.shared.ditto
@@ -29,16 +32,13 @@ class ViewModel: ObservableObject {
     var lastActionId = 0
 
     init() {
-        setLiveQuery()
-    }
-
-    func setLiveQuery() {
-        cancellables.removeAll()
-        ditto.store.collection(collectionName).findByID(docID)
-            .publisher()
-            .map({ $0.document?.value.asString() ?? "null" })
-            .assign(to: \.currentDocJSONString, on: self)
-            .store(in: &cancellables)
+        $collectionName.combineLatest($docID).map({ collectionName, docID in
+            return self.ditto.store.collection(collectionName).findByID(docID).publisher()
+        })
+        .switchToLatest()
+        .map({ $0.document?.value.asString() ?? "null" })
+        .assign(to: \.currentDocJSONString, on: self)
+        .store(in: &cancellables)
     }
 
     func insert() {
