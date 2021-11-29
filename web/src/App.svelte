@@ -208,7 +208,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <h4>
         Live Query for docId: <span class="text-primary font-bold">{docID}</span
         >
@@ -221,7 +221,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 d-none">
       <h4>Actions</h4>
       {#each actions as action (action.id)}
         <div
