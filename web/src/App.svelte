@@ -83,7 +83,7 @@
     await ditto!.store.collection(collectionName).insert(payload);
     actions = _.concat(
       {
-        id: _.random(0, 999),
+        id: _.uniqueId(),
         text: `ditto.store.collection("${collectionName}").insert(${JSON.stringify(
           payload,
           null,
