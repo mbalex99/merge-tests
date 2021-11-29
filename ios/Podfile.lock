@@ -1,0 +1,25 @@
+PODS:
+  - CombineDitto (0.1.4):
+    - DittoSwift (>= 1.0.9)
+  - DittoObjC (1.0.17)
+  - DittoSwift (1.0.17):
+    - DittoObjC (= 1.0.17)
+
+DEPENDENCIES:
+  - CombineDitto
+  - DittoSwift (= 1.0.17)
+
+SPEC REPOS:
+  trunk:
+    - CombineDitto
+    - DittoObjC
+    - DittoSwift
+
+SPEC CHECKSUMS:
+  CombineDitto: e257ba5278efa6dce6b4849cc24590b87cc57481
+  DittoObjC: 2aa2d01963761bc18243b9d6b47dae3f2e9f2912
+  DittoSwift: 2ced27efa14a5718b3b0e5e0c6883c508a5ae941
+
+PODFILE CHECKSUM: 6ca5566d8c9ec071e69dbd3efa46e0e2f92188f6
+
+COCOAPODS: 1.11.2
