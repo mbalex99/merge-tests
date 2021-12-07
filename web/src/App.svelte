@@ -157,7 +157,7 @@
     };
     await ditto!.store
       .collection(collectionName)
-      .insert(payload, { writeStrategy: "overwrite" });
+      .insert(payload, { writeStrategy: "merge" });
 
     actions = _.concat(
       {
