@@ -9,7 +9,7 @@
   import { fade } from "svelte/transition";
   import fadeScale from "./fadeScale";
   import { cubicInOut } from "svelte/easing";
-
+  import classNames from "classnames";
   let ditto: Ditto | undefined;
   let initErrorMessage: string | undefined;
   let initSuccessMessage: string | undefined;
@@ -28,6 +28,8 @@
 
   let actions: Action[] = [];
 
+  let isSyncEnabled = false;
+
   (async () => {
     try {
       await init();
@@ -43,13 +45,36 @@
       ditto.setLicenseToken(
         "o2d1c2VyX2lka21lcmdlLXRlc3RzZmV4cGlyeXgYMjAyMi0wMy0zMVQyMzo1OTo1OS4yMzhaaXNpZ25hdHVyZXhYd2xISWc5R2RrSHRPeW8rcnIxd3VwWklmclJPekVPa2NicWR5cVZvd2hFdzRncGcrZFhPWWp5aEVVZDlNQzQwUWQyYVoyVlFsUzZYMjhUeU54R1c5c2c9PQ=="
       );
-      ditto.tryStartSync();
       initSuccessMessage = `Successfully loaded Ditto.wasm for appID: ${appID} siteID: ${ditto.siteID}`;
       bindLiveQuery();
+      beginSync();
     } catch (err) {
       initErrorMessage = err.toString();
     }
   })();
+
+  function beginSync() {
+    try {
+      ditto.tryStartSync();
+      isSyncEnabled = true;
+    } catch (err) {
+      initErrorMessage = err.toString();
+      isSyncEnabled = false;
+    }
+  }
+
+  function endSync() {
+    ditto.stopSync();
+    isSyncEnabled = false;
+  }
+
+  function toggleSync() {
+    if (isSyncEnabled) {
+      endSync();
+    } else {
+      beginSync();
+    }
+  }
 
   function bindLiveQuery() {
     liveQuery?.stop();
@@ -61,7 +86,6 @@
           // I have to call a getter on a property
           // to stringify the value: https://github.com/getditto/ditto/issues/4625
           console.log(doc.name);
-
           currentDocumentJSONString = JSON.stringify(
             doc["@ditto.value"],
             null,
@@ -75,7 +99,7 @@
 
   async function insert() {
     let payload = {
-      _id: "123abc",
+      _id: docID,
       name: "Honda",
       isSold: true,
       tags: ["a", "b", "c"],
@@ -96,7 +120,7 @@
 
   async function insertOverwrite() {
     let payload = {
-      _id: "123abc",
+      _id: docID,
       name: `Honda-overwritten-${_.random(0, 999)}`,
       newProperty: _.random(0, 999),
       isSold: true,
@@ -121,7 +145,7 @@
 
   async function insertMerge() {
     let payload = {
-      _id: "123abc",
+      _id: docID,
       name: `Honda-overwritten-${_.random(0, 999)}`,
       isSold: true,
       tags: [
@@ -168,11 +192,24 @@
     </div>
   {/if}
 
-  {#if initSuccessMessage}
-    <div class="alert alert-success" role="alert">
-      {initSuccessMessage}
+  <div class="row">
+    <div class="col">
+      <div
+        class={classNames("alert", {
+          "alert-info": isSyncEnabled,
+          "alert-warning": !isSyncEnabled,
+        })}
+        role="alert"
+      >
+        {isSyncEnabled ? "YES, We are syncing!" : "NO, We are not syncing!"}
+      </div>
     </div>
-  {/if}
+    <div class="col">
+      <button on:click={toggleSync}>
+        {isSyncEnabled ? "Stop" : "Start"}
+      </button>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col">
@@ -182,7 +219,7 @@
           class="form-control"
           type="text"
           bind:value={collectionName}
-          on:blur={bindLiveQuery}
+          on:input={bindLiveQuery}
         />
       </div>
       <div class="input-group mb-3">
@@ -191,7 +228,7 @@
           class="form-control"
           type="text"
           bind:value={docID}
-          on:blur={bindLiveQuery}
+          on:input={bindLiveQuery}
         />
       </div>
     </div>
